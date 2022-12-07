@@ -7,6 +7,6 @@ resource "aws_cloudwatch_event_rule" "ec_shutdown" {
 }
 
 resource "aws_cloudwatch_event_target" "lambda-ec-shutdown" {
-  arn  = ""
+  arn  = aws_lambda_function.ec_shutdown.arn
   rule = aws_cloudwatch_event_rule.ec_shutdown.name
 }
