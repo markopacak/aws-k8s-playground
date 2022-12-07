@@ -4,8 +4,4 @@ locals {
   ec_ami  = "ami-065deacbcaac64cf2" # Ubuntu AMI
 
   k8s_worker_nodes = 3
-
-  tags = {
-    Name = "k8s-playground"
-  }
 }
