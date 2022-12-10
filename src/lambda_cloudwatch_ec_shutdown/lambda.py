@@ -4,11 +4,14 @@ import boto3
 
 ec2 = boto3.client("ec2")
 
-tag_filter = [{"Name": "tag:Project", "Values": ["k8s-playground"]}]
+ec_filters = [
+    {"Name": "tag:Project", "Values": ["k8s-playground"]},
+    {"Name": "instance-state-name", "Values": ["pending", "running"]},
+]
 
 
 def lambda_handler(event, context):
-    resp = ec2.describe_instances(Filters=tag_filter)
+    resp = ec2.describe_instances(Filters=ec_filters)
     ids = [
         i["InstanceId"] for r in resp["Reservations"] for i in r["Instances"]
     ]
