@@ -6,7 +6,7 @@ locals {
   k8s_worker_nodes = 1
 }
 
-variable "privatekeypath" {
-  type = string
-  default = "../aws-k8s-playground.pem"
+variable "ec_public_key_file" {
+  type    = string
+  default = "~/.ssh/k8s_playground.pub"
 }

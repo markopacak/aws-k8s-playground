@@ -1,4 +1,5 @@
 #! /bin/bash
 
-# TODO worker ID
+sudo apt-get update
+
 sudo hostnamectl set-hostname k8s-worker
