@@ -14,6 +14,9 @@ resource "aws_instance" "k8s_control_plane" {
   key_name = aws_key_pair.k8s_access.key_name
 
   user_data = file("../scripts/k8s_control_setup.sh")
+
+  # TODO move to vpc_security_group_ids when customizing vpc
+  security_groups = [aws_security_group.ec_k8s.name]
 }
 
 resource "aws_instance" "k8s_worker" {
@@ -28,4 +31,6 @@ resource "aws_instance" "k8s_worker" {
   count = local.k8s_worker_nodes
 
   user_data = file("../scripts/k8s_worker_setup.sh")
+
+  security_groups = [aws_security_group.ec_k8s.name]
 }
