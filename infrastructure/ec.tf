@@ -1,3 +1,16 @@
+
+module "kubeadm-token" {
+  source = "scholzj/kubeadm-token/random"
+}
+
+data "cloudinit_config" "k8s_control" {
+  part {
+    filename     = "k8s_control_setup.sh"
+    content_type = "text/x-shellscript"
+    content      = templatefile("../scripts/k8s_control_setup.sh", { k8s_cluster_token = module.kubeadm-token.token })
+  }
+}
+
 resource "aws_key_pair" "k8s_access" {
   key_name   = "k8s_access"
   public_key = file(var.ec_public_key_file)
@@ -13,7 +26,7 @@ resource "aws_instance" "k8s_control_plane" {
   }
   key_name = aws_key_pair.k8s_access.key_name
 
-  user_data = file("../scripts/k8s_control_setup.sh")
+  user_data = data.cloudinit_config.k8s_control.rendered
 
   # TODO move to vpc_security_group_ids when customizing vpc
   security_groups = [aws_security_group.ec_k8s.name]

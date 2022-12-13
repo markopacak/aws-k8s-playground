@@ -5,5 +5,3 @@ This is still in progress! Instructions will follow soon.
 
 
 ## Set up
-
-Create a Key Pair on AWS EC2
