@@ -10,6 +10,14 @@ data "cloudinit_config" "k8s_control" {
   }
 }
 
+data "cloudinit_config" "k8s_worker" {
+  part {
+    filename     = "k8s_worker_setup.sh"
+    content_type = "text/x-shellscript"
+    content      = templatefile("../src/ec_user_data/k8s_worker_setup.sh", { k8s_cluster_token = module.kubeadm-token.token, k8s_master_ip = aws_instance.k8s_control_plane.private_ip })
+  }
+}
+
 resource "aws_key_pair" "k8s_access" {
   key_name   = "k8s_access"
   public_key = file(var.ec_public_key_file)
@@ -39,7 +47,8 @@ resource "aws_instance" "k8s_worker" {
     Project = "k8s-playground"
   }
   key_name  = aws_key_pair.k8s_access.key_name
-  user_data = file("../src/ec_user_data/k8s_worker_setup.sh")
+  user_data = data.cloudinit_config.k8s_worker.rendered
 
   security_groups = [aws_security_group.ec_k8s.name]
+  depends_on      = [aws_instance.k8s_control_plane]
 }
