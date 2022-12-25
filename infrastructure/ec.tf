@@ -38,7 +38,7 @@ resource "aws_instance" "k8s_control_plane" {
 }
 
 resource "aws_instance" "k8s_worker" {
-  count = local.k8s_worker_nodes
+  count = var.k8s_worker_nodes
 
   ami           = local.ec_ami
   instance_type = local.ec_type

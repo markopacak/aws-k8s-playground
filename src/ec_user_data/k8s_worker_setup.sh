@@ -52,3 +52,21 @@ apt-mark hold kubelet kubeadm kubectl
 
 kubeadm reset --force
 kubeadm join "$K8S_MASTER_IP":6443 --token "$K8S_CLUSTER_TOKEN" --discovery-token-unsafe-skip-ca-verification
+
+# Install docker
+groupadd docker
+apt-get update
+apt-get install -y ca-certificates gnupg lsb-release
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \
+https://download.docker.com/linux/ubuntu \
+$(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+apt-get update
+apt-get install -y docker-ce docker-ce-cli --option=Dpkg::Options::=--force-confdef
+
+usermod -aG docker ubuntu
+# chmod 666 /var/run/docker.sock
+reboot
