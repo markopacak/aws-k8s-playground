@@ -135,6 +135,6 @@ dmypy.json
 infrastructure/infrastructure/
 *.tfstate
 *.tfstate.backup
-*.tfvars
+local.tfvars
 
 *.pem
