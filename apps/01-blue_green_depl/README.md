@@ -8,7 +8,7 @@ Extremely simply project that simulates a blue-green deployment using nginx web-
 
 Create cloud environment from the `infrastructure` folder:
 
-    terraform apply -var-file="../apps/01-blue-green/env.tfvars"
+    terraform apply -var-file="../apps/01-blue_green_depl/env.tfvars"
 
 Connect via SSH to the control pane and copy the YAML files.
 
